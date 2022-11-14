@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import axios from "axios";
 
 import styles from "./LoginForm.module.css";
 
@@ -12,6 +13,40 @@ import {
 } from "react-bootstrap";
 
 const LoginForm = () => {
+    const initialValues = {
+        userId: "",
+        password: "",
+    };
+    const [formValues, setFormValues] = useState(initialValues);
+    // const [formErrors, setFormErrors] = useState({});
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormValues({ ...formValues, [name]: value });
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log("test");
+        console.log(formValues);
+
+        const configuration = {
+            method: "post",
+            url: "http://localhost:5000/users/login",
+            data: formValues,
+        };
+
+        axios(configuration)
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    // make api call
+
     return (
         <Container>
             <Row
@@ -27,9 +62,12 @@ const LoginForm = () => {
                                 className="mb-3"
                             >
                                 <Form.Control
+                                    name="userId"
+                                    value={formValues.userId}
                                     type="text"
                                     placeholder="user ID"
                                     className="rounded-0"
+                                    onChange={handleChange}
                                 />
                             </FloatingLabel>
                             <FloatingLabel
@@ -38,9 +76,12 @@ const LoginForm = () => {
                                 className="mb-3"
                             >
                                 <Form.Control
+                                    name="password"
+                                    value={formValues.password}
                                     type="password"
                                     placeholder="password"
                                     className="rounded-0"
+                                    onChange={handleChange}
                                 />
                             </FloatingLabel>
 
@@ -58,6 +99,7 @@ const LoginForm = () => {
                                 <Button
                                     type="button"
                                     className={`btn ${styles["btn-dark"]} btn-lg border-0 rounded-0`}
+                                    onClick={handleSubmit}
                                 >
                                     Login
                                 </Button>

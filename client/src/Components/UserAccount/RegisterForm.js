@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
 
 import styles from "./RegisterForm.module.css";
 
@@ -12,6 +13,10 @@ import {
 } from "react-bootstrap";
 
 const RegisterForm = () => {
+    axios.defaults.headers.common = {
+        "Content-Type": "application/json",
+    };
+
     const [userType, setUserType] = useState("User");
     const initialValues = {
         userId: "",
@@ -24,7 +29,8 @@ const RegisterForm = () => {
         agentId: "",
     };
     const [formValues, setFormValues] = useState(initialValues);
-    // const [formErrors, setFormErrors] = useState({});
+    const [formErrors, setFormErrors] = useState({});
+    const [isSubmit, setIsSubmit] = useState(false);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -35,14 +41,80 @@ const RegisterForm = () => {
         setUserType(event.target.value);
     };
 
-    const formSubmitHandler = (event) => {
-        event.preventDefault();
-        // setFormErrors(validate(formValues));
+    const validate = (values) => {
+        const errors = {};
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+        if (!values.userId) {
+            errors.userId = "User ID is required!";
+        }
+
+        if (!values.password) {
+            errors.password = "Password is required!";
+        }
+
+        if (!values.cfmPassword) {
+            errors.cfmPassword = "Confirm Password is required!";
+        }
+
+        if (!values.fName) {
+            errors.fName = "First Name is required!";
+        }
+
+        if (!values.lName) {
+            errors.lName = "Last Name is required!";
+        }
+
+        if (!values.contactNo) {
+            errors.contactNo = "Contact No is required!";
+        }
+
+        if (!values.email) {
+            errors.email = "Email Address is required!";
+        } else if (!regex.test(values.email)) {
+            errors.email = "This is not a valid Email Address format!";
+        }
+
+        if (userType === "Agent" && !values.agentId) {
+            errors.userType = "Agent ID is required!";
+        }
+
+        if (values.password !== values.cfmPassword) {
+            errors.passwordMismatch = "Passwords do not match!";
+        }
+
+        return errors;
     };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setFormErrors(validate(formValues));
+        setIsSubmit(true);
+        // console.log(formValues);
+    };
+
+    useEffect(() => {
+        console.log(formErrors);
+        if (Object.keys(formErrors).length === 0 && isSubmit) {
+            const configuration = {
+                method: "post",
+                url: "http://localhost:5000/users/register",
+                data: formValues,
+            };
+
+            axios(configuration)
+                .then((result) => {
+                    console.log(result);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [formErrors]);
 
     return (
         <Container>
-            <pre>{JSON.stringify(formValues, undefined, 2)}</pre>
+            {/* <pre>{JSON.stringify(formValues, undefined, 2)}</pre> */}
+            <pre>{JSON.stringify(formErrors, undefined, 2)}</pre>
             <Row
                 className={`d-flex ${styles.content} justify-content-center align-items-center`}
             >
@@ -52,7 +124,7 @@ const RegisterForm = () => {
                             Create an Account
                         </h3>
 
-                        <Form className="mb-3" onSubmit={formSubmitHandler}>
+                        <Form className="mb-3" onSubmit={handleSubmit}>
                             <div
                                 key="inline-radio"
                                 className="mb-3 text-center"
@@ -124,6 +196,7 @@ const RegisterForm = () => {
                                     required
                                 />
                             </FloatingLabel>
+                            <p>{formErrors.password}</p>
 
                             <FloatingLabel
                                 controlId="floatingFName"
@@ -213,6 +286,7 @@ const RegisterForm = () => {
                                 <Button
                                     type="submit"
                                     className="btn btn-dark btn-lg border-0 rounded-0"
+                                    onClick={handleSubmit}
                                 >
                                     Create Account
                                 </Button>
