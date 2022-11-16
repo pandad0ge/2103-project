@@ -20,7 +20,14 @@ const HomePage = () => {
       <Container>
         <Row>
           <Col></Col>
-          <Col xs={6}>
+          <Col
+            xs={6}
+            style={{
+              border: "1px solid lavenderblush",
+              borderRadius: "40px",
+              padding: "40px",
+            }}
+          >
             <Form>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Control placeholder="Search by Address" />
@@ -31,7 +38,7 @@ const HomePage = () => {
             </Form>
           </Col>
           <Col></Col>
-        </Row>
+        </Row>{" "}
       </Container>
       <div
         style={{
