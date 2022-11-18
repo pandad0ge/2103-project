@@ -1,4 +1,3 @@
-import { Container, Card } from "react-bootstrap";
 import NavBar from "./UI/NavBar";
 import {
   MDBCol,
@@ -8,21 +7,16 @@ import {
   MDBCardText,
   MDBCardBody,
   MDBCardImage,
-  MDBBtn,
-  MDBBreadcrumb,
-  MDBBreadcrumbItem,
-  MDBProgress,
-  MDBProgressBar,
-  MDBIcon,
-  MDBListGroup,
-  MDBListGroupItem,
 } from "mdb-react-ui-kit";
 
 const ProfilePage = () => {
   return (
     <>
       <NavBar />
-      <h2 style={{ textAlign: "center" }}> if Agent Profile</h2>
+      <h2 style={{ textAlign: "center", color: "lavenderblush" }}>
+        {" "}
+        if Agent Profile
+      </h2>
       <section style={{ backgroundColor: "transparent" }}>
         <MDBContainer className="py-5">
           <MDBRow>
@@ -96,8 +90,67 @@ const ProfilePage = () => {
           </MDBRow>
         </MDBContainer>
       </section>
+      <section>
+        <div
+          style={{
+            paddingLeft: "80px",
+            marginBottom: "30px",
+            color: "lavenderblush",
+          }}
+        >
+          <h2 className="home-latest-projects">Created Listings</h2>
+        </div>
+        <div>
+          {" "}
+          <section id="gallery">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-4 mb-4">
+                  <div className="card">
+                    <img
+                      src="https://sg2-cdn.pgimgs.com/developer-listing/4483484/OUPHO.138001839.V800/Pollen-Collection-Seletar-Yio-Chu-Kang-Singapore.jpg"
+                      alt=""
+                      className="card-img-top"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">You cant afford Also</h5>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-4 mb-4">
+                  <div className="card">
+                    <img
+                      src="https://images.unsplash.com/photo-1516214104703-d870798883c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=60"
+                      alt=""
+                      className="card-img-top"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">2,000 sqft Condo @ CBD</h5>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-4 mb-4">
+                  <div className="card">
+                    <img
+                      src="https://images.unsplash.com/photo-1477862096227-3a1bb3b08330?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"
+                      alt=""
+                      className="card-img-top"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">Sunset</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>{" "}
+        </div>
+      </section>
       <div>
-        <h2 style={{ textAlign: "center" }}> if User Profile</h2>
+        <h2 style={{ textAlign: "center", color: "lavenderblush" }}>
+          {" "}
+          if User Profile
+        </h2>
       </div>
       <section style={{ backgroundColor: "transparent" }}>
         <MDBContainer className="py-5">
@@ -166,6 +219,62 @@ const ProfilePage = () => {
             </MDBCol>
           </MDBRow>
         </MDBContainer>
+      </section>
+      <section>
+        <div
+          style={{
+            paddingLeft: "80px",
+            marginBottom: "30px",
+            color: "lavenderblush",
+          }}
+        >
+          <h2 className="home-latest-projects">Saved Listings</h2>
+        </div>
+        <div>
+          {" "}
+          <section id="gallery">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-4 mb-4">
+                  <div className="card">
+                    <img
+                      src="https://sg2-cdn.pgimgs.com/developer-listing/4483484/OUPHO.138001839.V800/Pollen-Collection-Seletar-Yio-Chu-Kang-Singapore.jpg"
+                      alt=""
+                      className="card-img-top"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">You cant afford Also</h5>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-4 mb-4">
+                  <div className="card">
+                    <img
+                      src="https://images.unsplash.com/photo-1516214104703-d870798883c5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=60"
+                      alt=""
+                      className="card-img-top"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">2,000 sqft Condo @ CBD</h5>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-4 mb-4">
+                  <div className="card">
+                    <img
+                      src="https://images.unsplash.com/photo-1477862096227-3a1bb3b08330?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"
+                      alt=""
+                      className="card-img-top"
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">Sunset</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>{" "}
+        </div>
       </section>
     </>
   );
