@@ -8,7 +8,7 @@ import HomePage from "./Components/HomePage";
 import NotFoundPage from "./Components/NotFoundPage";
 import NavBar from "./Components/UI/NavBar";
 import ProfilePage from "./Components/ProfilePage";
-
+import Test from "./Test";
 function App() {
   const [backendData, setBackendData] = useState([{}]);
 
@@ -29,6 +29,7 @@ function App() {
       <Route path="/rent/:id" element={<HomePage />} />
       <Route path="*" element={<NotFoundPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/test" element={<Test/>} />
     </Routes>
     // <div>
     //     {typeof backendData.users == "undefined" ? (

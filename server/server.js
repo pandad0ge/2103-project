@@ -101,8 +101,12 @@
 //     console.log("Server started on port 5000");
 // });
 
+//start here
+
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const mysql = require('mysql');
 
 const db = mysql.createPool({
@@ -112,22 +116,56 @@ const db = mysql.createPool({
     database: '2103db',
 });
 
+app.use(cors());
+//essential for requesting variables from the front end
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }))
+
+
 //req - require
 //res - respond
-app.get("/", (req, res) => {
+// app.get("/", (req, res) => {
 
-    const sqlInsert = "INSERT INTO movie_reviews (movieName, movieReview) VALUES('kaho', 'kaho beast');"
-    db.query(sqlInsert, (err, result)=>{
-        res.send("test");
+//     const sqlInsert = "INSERT INTO movie_reviews (movieName, movieReview) VALUES('kaho', 'kaho beast');"
+//     db.query(sqlInsert, (err, result)=>{
+//         res.send("test");
+//     });
+// })
+
+// app.get("/", (req, res) => {
+//     const sqlSelect = "SELECT * from movie_reviews";
+//     db.query(sqlSelect, (err, result) => {
+//         res.send(result);
+//     });
+// });
+
+// app.get("/", (req, res) => {
+//     res.send('hello');
+// });
+
+
+app.get("/api/get", (req, res) => {
+    const sqlSelect = "SELECT * from movie_reviews";
+    db.query(sqlSelect, (err, result) => {
+        res.send(result);
+    });
+});
+
+app.post("/api/insert", (req, res) => {
+
+    //request variables form Client
+    const movieName = req.body.movieName;
+    const movieReview = req.body.movieReview;
+
+    const sqlInsert = "INSERT INTO movie_reviews (movieName, movieReview) VALUES(?, ?)";
+    db.query(sqlInsert, [movieName, movieReview], (err, result) => {
+        console.log(result);
     });
 })
 
-// app.post("/api/insert", (req, res)=> {
-//     const sqlInsert = "INSERT INTO movie_reviews (movieName, movieReview) VALUES(?, ?);"
-//     db.query(sqlInsert, [movieName, movieReview], (err, result) => {});
-// })
-
-app.listen(3001, ()=>{
+app.listen(3001, () => {
     console.log("running on 3001");
 })
+
+
 
