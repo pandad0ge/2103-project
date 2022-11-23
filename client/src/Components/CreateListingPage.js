@@ -4,7 +4,6 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 const CreateListingPage = () => {
   return (
     <>
-      <NavBar />
       <section
         style={{
           backgroundColor: "lavenderblush",
