@@ -16,7 +16,11 @@ const NavBar = () => {
   }
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar
+      bg="light"
+      expand="lg"
+      className={slug === "/login" || slug === "/register" ? "d-none" : ""}
+    >
       <Container>
         <Navbar.Brand
           as={Link}
