@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LoginPage from "./Components/UserAccount/LoginPage";
@@ -9,6 +9,9 @@ import NotFoundPage from "./Components/NotFoundPage";
 import NavBar from "./Components/UI/NavBar";
 import ProfilePage from "./Components/ProfilePage";
 import CreateListingPage from "./Components/CreateListingPage";
+import Buy from "./Pages/Buy";
+import Rent from "./Pages/Rent";
+import IndividualListing from "./Pages/IndividualListing";
 
 function App() {
   const [backendData, setBackendData] = useState([{}]);
@@ -22,16 +25,29 @@ function App() {
   }, []);
 
   return (
-    <Routes>
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/buy/:id" element={<HomePage />} />
-      <Route path="/rent/:id" element={<HomePage />} />
-      <Route path="*" element={<NotFoundPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/newlisting" element={<CreateListingPage />} />
-    </Routes>
+    <>
+      <NavBar />
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        {/* User: Home, Buy, Rent, Profile */}
+        <Route path="/user/home" element={<HomePage />} />
+        <Route path="/user/buy/:id" element={<IndividualListing />} />
+        <Route path="/user/buy" element={<Buy />} />
+        <Route path="/user/rent/:id" element={<IndividualListing />} />
+        <Route path="/user/rent" element={<Rent />} />
+        <Route path="/user/profile" element={<ProfilePage />} />
+        {/* Agent: Home, Buy, Rent, New Listing, Profile */}
+        <Route path="/agent/home" element={<HomePage />} />
+        <Route path="/agent/buy/:id" element={<IndividualListing />} />
+        <Route path="/agent/buy" element={<Buy />} />
+        <Route path="/agent/rent/:id" element={<IndividualListing />} />
+        <Route path="/agent/rent" element={<Rent />} />
+        <Route path="/agent/profile" element={<ProfilePage />} />
+        <Route path="agent/newlisting" element={<CreateListingPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
     // <div>
     //     {typeof backendData.users == "undefined" ? (
     //         <p>Loading...</p>

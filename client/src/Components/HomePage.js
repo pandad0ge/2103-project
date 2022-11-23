@@ -13,7 +13,6 @@ import NavBar from "./UI/NavBar";
 const HomePage = () => {
   return (
     <>
-      <NavBar />
       <Figure>
         <Figure.Image src={skyline} fluid />
       </Figure>
