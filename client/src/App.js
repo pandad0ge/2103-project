@@ -44,7 +44,7 @@ function App() {
         <Route path="/agent/rent/:id" element={<IndividualListing />} />
         <Route path="/agent/rent" element={<Rent />} />
         <Route path="/agent/profile" element={<ProfilePage />} />
-        <Route path="agent/newlisting" element={<CreateListingPage />} />
+        <Route path="agent/new-listing" element={<CreateListingPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
