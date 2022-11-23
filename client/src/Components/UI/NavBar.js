@@ -7,7 +7,7 @@ const NavBar = () => {
   let slug = window.location.pathname;
   const userRegex = /\/user[\s\S]+/g;
   const agentRegex = /\/agent[\s\S]+/g;
-  let type;
+  let type = "user";
   if (slug.match(userRegex)) {
     type = "user";
   }
