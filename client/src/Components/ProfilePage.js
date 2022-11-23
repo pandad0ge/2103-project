@@ -12,7 +12,6 @@ import {
 const ProfilePage = () => {
   return (
     <>
-      <NavBar />
       <h2 style={{ textAlign: "center", color: "lavenderblush" }}>
         {" "}
         if Agent Profile
