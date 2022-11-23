@@ -8,6 +8,7 @@ import HomePage from "./Components/HomePage";
 import NotFoundPage from "./Components/NotFoundPage";
 import NavBar from "./Components/UI/NavBar";
 import ProfilePage from "./Components/ProfilePage";
+import CreateListingPage from "./Components/CreateListingPage";
 import Buy from "./Pages/Buy";
 import Rent from "./Pages/Rent";
 import IndividualListing from "./Pages/IndividualListing";
@@ -43,6 +44,7 @@ function App() {
         <Route path="/agent/rent/:id" element={<IndividualListing />} />
         <Route path="/agent/rent" element={<Rent />} />
         <Route path="/agent/profile" element={<ProfilePage />} />
+        <Route path="agent/newlisting" element={<CreateListingPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
