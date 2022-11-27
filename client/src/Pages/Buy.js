@@ -9,7 +9,7 @@ export default function Buy() {
 	useEffect(() => {
 		setIsLoading(true);
 		const configuration = {
-			url: "http://localhost:5000/user/home/api/sale", // /get/listing /post/listing
+			url: "http://localhost:5000/user/home/api/sale",
 			method: "get",
 		};
 
@@ -70,6 +70,7 @@ export default function Buy() {
 											<p>Region: {value.region}</p>
 										</h5>
 										<p className="card-text">{`${value.description}`}</p>
+										<p className="card-text">{`${value.address}`}</p>
 										<p className="text-muted">
 											{" "}
 											<i className="fa fa-phone"></i>{" "}

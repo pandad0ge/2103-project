@@ -9,7 +9,7 @@ export default function Rent() {
 	useEffect(() => {
 		setIsLoading(true);
 		const configuration = {
-			url: "http://localhost:5000/user/home/api/rent", // /get/listing /post/listing
+			url: "http://localhost:5000/user/home/api/rent",
 			method: "get",
 		};
 
@@ -64,6 +64,7 @@ export default function Rent() {
 										<p className="card-text">
 											{value.description}
 										</p>
+										<p className="card-text">{`${value.address}`}</p>
 										<p className="text-muted">
 											{" "}
 											<i className="fa fa-phone"></i>{" "}

@@ -42,10 +42,108 @@ app.get("/users", (req, res) => {
     res.json(users);
 });
 
-app.get("/users/home/api/searchlisting", (req, res) => { });
+app.post("/agent/home/api/createlisting", (req, res) => {
+	console.log(req.query);
 
-app.post("/api/searchlisting", (req, res) => {
-    console.log(req.body);
+	if (Object.keys(req.query).length === 0) return;
+
+	let professorAgentId = "1";
+
+	let query1 = `INSERT INTO listing
+    (listing_type,
+    property_type,
+    floor_size,
+    listed_date,
+    availability,
+    description,
+    address,
+    region,
+    listed_price,
+    status,
+    listed_by)
+    VALUES (?, ?, ?, CURDATE(), ?, ?, ?, ?, ?, 1, ${professorAgentId});`;
+
+	let selectLatestQuery =
+		"SELECT * FROM listing ORDER BY listing_id DESC LIMIT 1";
+
+	let query2 = `INSERT INTO listingimage
+    (listing_id, image_link) VALUES (?, ?);`;
+
+	try {
+		db.query(
+			query1,
+			[
+				req.query.listing_type,
+				req.query.property_type,
+				req.query.floor_size,
+				req.query.availability,
+				req.query.description,
+				req.query.address,
+				req.query.region,
+				req.query.listed_price,
+				req.query.status,
+			],
+			(error, rows, fields) => {
+				if (error) return res.json({ error: error });
+			}
+		);
+
+		db.query(selectLatestQuery, (error, rows, fields) => {
+			if (error) return res.json({ error: error });
+			// console.log(rows);
+			db.query(
+				query2,
+				[rows[0]["listing_id"], req.query.image_link],
+				(error, rows, fields) => {
+					if (error) return res.json({ error: error });
+				}
+			);
+		});
+
+		res.status(201).send();
+	} catch {
+		res.status(500).send();
+	}
+});
+
+app.get("/user/home/api/searchlisting", (req, res) => {
+	console.log(req.query);
+
+	if (
+		req.query.address === undefined ||
+		req.query.listing_type === undefined
+	) {
+		return;
+	 }
+
+	if (Object.keys(req.query).length === 0) return;
+
+	// This query will be used to select columns
+	let query = `SELECT L.floor_size, L.property_type, L.region, L.address,
+                L.listed_price, L.description, L.listing_type,
+                A.first_name, A.last_name, A.contact_no,
+                I.image_link
+                FROM listing AS L
+                INNER JOIN agentaccount AS A
+                ON L.listed_by = A.agent_user_id
+                INNER JOIN listingimage AS I
+                ON L.listing_id = I.listing_id
+                WHERE L.address LIKE ?
+                AND L.listing_type = ?
+                ORDER BY listed_date;`;
+
+	try {
+		db.query(
+			query,
+			[`%${req.query.address}%`, req.query.listing_type],
+			(err, rows, fields) => {
+    			if (err) throw err;
+				res.json(rows);
+			}
+		);
+	} catch (err) {
+		console.log(err);
+	}
 });
 
 app.get("/user/home/api/listing", (req, res) => {
