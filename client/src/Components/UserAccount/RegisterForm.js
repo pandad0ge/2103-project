@@ -89,7 +89,7 @@ const RegisterForm = () => {
         event.preventDefault();
         setFormErrors(validate(formValues));
         setIsSubmit(true);
-        // console.log(formValues);
+        console.log(formValues);
     };
 
     useEffect(() => {

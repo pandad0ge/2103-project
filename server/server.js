@@ -1,11 +1,18 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const mysql = require("mysql2");
+const mysql = require("mysql");
 const bcrypt = require("bcrypt");
 
-let db = mysql.createConnection(process.env.DATABASE_URL);
-console.log("Connected to PlanetScale!");
+// let db = mysql.createConnection(process.env.DATABASE_URL);
+// console.log("Connected to PlanetScale!");
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'sqluser',
+    password: 'password',
+    database: '2103db',
+});
 
 const users = [];
 
@@ -25,7 +32,7 @@ app.post("/users/register", async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         db.query(
-            `INSERT INTO UserAccounts (user_id, first_name, last_name, contact_no, email_address, password_hash) VALUES
+            `INSERT INTO useraccount (user_id, first_name, last_name, contact_no, email_address, password_hash) VALUES
             (?,?,?,?,?,?)`,
             [
                 req.body.userId,
@@ -55,7 +62,7 @@ app.post("/users/login", async (req, res) => {
         console.log("Connected to Database");
 
         // This query will be used to select columns
-        let query = `SELECT * FROM UserAccounts WHERE user_id = ${req.body.userId}`;
+        let query = `SELECT * FROM useraccount WHERE user_id = ${req.body.userId}`;
 
         try {
             db.query(query, (err, rows) => {
