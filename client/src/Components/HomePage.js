@@ -77,6 +77,22 @@ const HomePage = () => {
 							>
 								<Form.Control placeholder="Search by Address" />
 							</Form.Group>
+              <div key={`inline-radio`} className="mb-3">
+                <Form.Check
+                  inline
+                  name="buy-rent"
+                  type="radio"
+                  label={"Buy"}
+                  id="inline-radio-1"
+                />
+                <Form.Check
+                  inline
+                  name="buy-rent"
+                  type="radio"
+                  label={"Rent"}
+                  id="inline-radio-2"
+                />
+              </div>
 							<Button
 								variant="outline-light"
 								type="submit"
