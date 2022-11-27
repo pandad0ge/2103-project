@@ -106,6 +106,36 @@ app.post("/agent/home/api/createlisting", (req, res) => {
 	}
 });
 
+app.post("/user/home/api/savelisting", (req, res) => {
+	console.log(req.query);
+
+	if (Object.keys(req.query).length === 0) return;
+
+	let professorUserId = "10";
+
+	let saveListing = `INSERT INTO savedlisting
+    (listing_id,
+    user_id,
+    date_saved)
+    VALUES (?, ${professorUserId}, CURDATE());`;
+
+	try {
+		db.query(
+			saveListing,
+			[
+				req.query.listing_id
+			],
+			(error, rows, fields) => {
+				if (error) return res.json({ error: error });
+			}
+		);
+
+		res.status(201).send();
+	} catch {
+		res.status(500).send();
+	}
+});
+
 app.get("/user/home/api/searchlisting", (req, res) => {
 	console.log(req.query);
 
