@@ -101,9 +101,6 @@ app.get("/user/home/api/searchlisting", (req, res) => {
 
 // get specific listing
 app.get("/agent/profile/api/getlisting", (req, res) => {
-	console.log("hello world");
-	console.log(req.query);
-
 	if (req.query.listing_id === undefined) {
 		return;
 	}
@@ -111,8 +108,7 @@ app.get("/agent/profile/api/getlisting", (req, res) => {
 	if (Object.keys(req.query).length === 0) return;
 
 	// This query will be used to select columns
-	let query = `SELECT L.listing_id, L.floor_size, L.property_type, L.region, L.address, 
-                L.listed_price, L.description, L.listing_type,
+	let query = `SELECT L.*,
                 A.first_name, A.last_name, A.contact_no,
                 I.image_link
                 FROM listing AS L
@@ -421,6 +417,50 @@ app.post("/users/register", async (req, res) => {
 // ================================================
 // =============== UPDATE QUERIES =================
 // ================================================
+
+// update specific listing
+app.put("/agent/home/api/updatelisting", (req, res) => {
+	console.log(req.query);
+
+	if (Object.keys(req.query).length === 0) return;
+
+	let updateQuery = `UPDATE listing
+        SET listing_type = ?,
+        property_type = ?,
+        floor_size = ?,
+        availability = ?,
+        description = ?,
+        address = ?,
+        region = ?,
+        listed_price = ?
+        WHERE listing_id = ? AND listed_by = '${professorAgentId}';`;
+
+	try {
+		db.query(
+			updateQuery,
+			[
+				req.query.listing_type,
+				req.query.property_type,
+				Number(req.query.floor_size),
+				req.query.availability,
+				req.query.description,
+				req.query.address,
+				req.query.region,
+				Number(req.query.listed_price),
+				Number(req.query.listing_id),
+			],
+			(err, rows, fields) => {
+				if (err) throw err;
+				console.log(rows.affectedRows);
+			}
+		);
+
+		//res.status(201).send();
+	} catch (err) {
+		//res.status(500).send();
+		console.log(err);
+	}
+});
 
 // ================================================
 // =============== DELETE QUERIES =================

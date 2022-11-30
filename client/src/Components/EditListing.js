@@ -1,25 +1,29 @@
 import { Form, Button, Row, Col } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 
 const EditListingPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
-	const [data, setData] = useState([]);
 	const [values, setValues] = useState([]);
 	const [formState, setFormState] = useState([0]);
+	const navigate = useNavigate();
 
 	const handleInputChange = (e) => {
+		let tempObj = { ...values };
+		tempObj[e.target.name] = e.target.value;
 		setValues({
-			...values,
-			[e.target.name]: e.target.value,
+			...tempObj,
 		});
+		console.log(values);
 	};
 
 	const submit = (e) => {
 		e.preventDefault();
 		setFormState(formState + 1);
-		console.log(formState);
+		// console.log(formState);
 		console.log(values);
 	};
 
@@ -38,15 +42,44 @@ const EditListingPage = () => {
 
 		axios(configuration)
 			.then((result) => {
+				let obj = {};
+				for (let i = 0; i < result.data.length; i++) {
+					console.log(result.data[i]);
+					obj = {
+						...result.data[i],
+					};
+				}
+
+				obj.availability = obj.availability.slice(0, 10);
+				obj.listed_date = obj.listed_date.slice(0, 10);
+
 				setIsLoading(false);
-				console.log(result.data);
+				setValues(obj);
 			})
 			.catch((error) => {
 				console.log(error);
 			});
 	}, []);
 
-	console.log(listingID);
+	useEffect(() => {
+		setIsLoading(true);
+		const configuration = {
+			url: "http://localhost:5000/agent/home/api/updatelisting",
+			method: "put",
+			params: values,
+		};
+
+		axios(configuration)
+			.then((result) => {
+				console.log(result);
+			})
+			.then(() => {
+				navigate("/agent/profile/");
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, [formState]);
 
 	if (isLoading) {
 		return (
@@ -86,6 +119,7 @@ const EditListingPage = () => {
 									<Form.Control
 										placeholder="Image Link"
 										onChange={handleInputChange}
+										defaultValue={values.image_link}
 										name="image_link"
 									/>
 								</Col>
@@ -129,6 +163,7 @@ const EditListingPage = () => {
 										placeholder="Street, Unit No. etc."
 										onChange={handleInputChange}
 										name="address"
+										defaultValue={values.address}
 									/>
 								</Col>
 							</Form.Group>
@@ -141,6 +176,7 @@ const EditListingPage = () => {
 										placeholder="xxx sqm"
 										onChange={handleInputChange}
 										name="floor_size"
+										defaultValue={values.floor_size}
 									/>
 								</Col>
 							</Form.Group>
@@ -153,6 +189,10 @@ const EditListingPage = () => {
 										placeholder="YYYY-MM-DD"
 										onChange={handleInputChange}
 										name="availability"
+										defaultValue={values.availability.slice(
+											0,
+											10
+										)}
 									/>
 								</Col>
 							</Form.Group>
@@ -166,6 +206,7 @@ const EditListingPage = () => {
 										style={{ height: "100px" }}
 										onChange={handleInputChange}
 										name="description"
+										defaultValue={values.description}
 									/>
 								</Col>
 							</Form.Group>
@@ -178,6 +219,7 @@ const EditListingPage = () => {
 										placeholder="Central"
 										onChange={handleInputChange}
 										name="region"
+										defaultValue={values.region}
 									/>
 								</Col>
 							</Form.Group>
@@ -190,14 +232,13 @@ const EditListingPage = () => {
 										placeholder=""
 										onChange={handleInputChange}
 										name="listed_price"
+										defaultValue={values.listed_price}
 									/>
 								</Col>
 							</Form.Group>
 							<Form.Group as={Row} className="mb-3">
 								<Col sm={{ span: 10, offset: 2 }}>
-									<Button type="submit">
-										Create Listing
-									</Button>
+									<Button type="submit">Edit Listing</Button>
 								</Col>
 							</Form.Group>
 						</Form>
