@@ -130,6 +130,7 @@ const HomePage = () => {
               <div key={`inline-radio`} className="mb-3">
                 <Form.Check
                   inline
+                  checked
                   name="buy-rent"
                   type="radio"
                   label={"Buy"}
