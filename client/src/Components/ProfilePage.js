@@ -20,7 +20,7 @@ const ProfilePage = () => {
 	useEffect(() => {
 		setIsLoading(true);
 		const configuration = {
-			url: "http://localhost:5000/user/profile/api/user", // /get/listing /post/listing
+			url: "http://localhost:5000/user/profile/api/user",
 			method: "get",
 		};
 

@@ -101,6 +101,8 @@ app.get("/user/home/api/searchlisting", (req, res) => {
 
 // get specific listing
 app.get("/agent/profile/api/getlisting", (req, res) => {
+	console.log(req.query);
+
 	if (req.query.listing_id === undefined) {
 		return;
 	}
@@ -131,6 +133,8 @@ app.get("/agent/profile/api/getlisting", (req, res) => {
 
 // get all listing
 app.get("/user/home/api/listing", (req, res) => {
+	console.log(req.query);
+
 	// This query will be used to select columns
 	let query = `SELECT L.floor_size, L.property_type, L.region, L.address, 
                 L.listed_price, L.description, L.listing_type,
@@ -156,6 +160,8 @@ app.get("/user/home/api/listing", (req, res) => {
 
 // get all listings that are sales
 app.get("/user/home/api/sale", (req, res) => {
+	console.log(req.query);
+
 	// This query will be used to select columns
 	let query = `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description,
                 A.first_name, A.last_name, A.contact_no,
@@ -180,6 +186,8 @@ app.get("/user/home/api/sale", (req, res) => {
 
 // get all listing that are rents
 app.get("/user/home/api/rent", (req, res) => {
+	console.log(req.query);
+
 	// This query will be used to select columns
 	let query = `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description,
                 A.first_name, A.last_name, A.contact_no,
@@ -204,6 +212,8 @@ app.get("/user/home/api/rent", (req, res) => {
 
 // get all users
 app.get("/user/profile/api/user", (req, res) => {
+	console.log(req.query);
+
 	let query = `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description, L.listing_type,
                 A.first_name, A.last_name, A.contact_no,
                 I.image_link,
@@ -215,13 +225,14 @@ app.get("/user/profile/api/user", (req, res) => {
                 ON L.listing_id = I.listing_id
                 INNER JOIN savedlisting  AS S
                 ON L.listing_id = S.listing_id
-                INNER JOIN useraccount AS U 
+                INNER JOIN useraccount AS U
                 ON S.user_id = U.user_id
                 WHERE S.user_id = ${professorUserId};`;
 
 	try {
 		db.query(query, (err, rows) => {
 			if (err) throw err;
+			console.log(rows);
 			res.json(rows);
 		});
 	} catch (err) {
@@ -231,6 +242,8 @@ app.get("/user/profile/api/user", (req, res) => {
 
 // get professor agent user account
 app.get("/agent/profile/api/agent", (req, res) => {
+	console.log(req.query);
+
 	let query = `SELECT L.listing_id, L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description, L.listing_type,
 	            A.first_name, A.last_name, A.contact_no, A.email_address,
 	            I.image_link,
@@ -245,7 +258,8 @@ app.get("/agent/profile/api/agent", (req, res) => {
 	            ON A.agent_id = AG.agent_id
 	            INNER JOIN agency AS AC
 	            ON AG.estate_agency_license_no = AC.estate_agency_license_no
-	            WHERE A.agent_user_id = ${professorAgentId};`;
+	            WHERE A.agent_user_id = ${professorAgentId}
+                ORDER BY listed_date DESC;`;
 
 	// let query = `SELECT A.first_name, A.last_name, A.contact_no, A.email_address
 	// FROM agentaccount AS A
@@ -262,6 +276,8 @@ app.get("/agent/profile/api/agent", (req, res) => {
 });
 
 app.post("/users/login", async (req, res) => {
+	console.log(req.query);
+
 	// This query will be used to select columns
 	let query = `SELECT * FROM useraccount WHERE user_id = ${req.body.userId}`;
 
@@ -334,12 +350,12 @@ app.post("/agent/home/api/createlisting", (req, res) => {
 			[
 				req.query.listing_type,
 				req.query.property_type,
-				req.query.floor_size,
+				Number(req.query.floor_size),
 				req.query.availability,
 				req.query.description,
 				req.query.address,
 				req.query.region,
-				req.query.listed_price,
+				Number(req.query.listed_price),
 				req.query.status,
 			],
 			(error, rows, fields) => {
@@ -388,6 +404,8 @@ app.post("/user/home/api/savelisting", (req, res) => {
 });
 
 app.post("/users/register", async (req, res) => {
+	console.log(req.query);
+
 	try {
 		console.log(req.body);
 
@@ -465,3 +483,30 @@ app.put("/agent/home/api/updatelisting", (req, res) => {
 // ================================================
 // =============== DELETE QUERIES =================
 // ================================================
+
+app.delete("/agent/profile/api/deletelisting", (req, res) => {
+	console.log(req.query);
+
+	if (Object.keys(req.query).length === 0) return;
+
+	if (req.query.listing_id === "0" || req.query.listing_id === 0) return;
+
+	let deleteQuery = `DELETE FROM listing 
+       WHERE listing_id = ? AND listed_by = ${professorAgentId}`;
+
+	try {
+		db.query(
+			deleteQuery,
+			[Number(req.query.listing_id)],
+			(err, rows, fields) => {
+				if (err) throw err;
+				console.log(rows.affectedRows);
+			}
+		);
+
+		// res.status(201).send();
+	} catch (err) {
+		console.log(err);
+		res.status(500).send();
+	}
+});

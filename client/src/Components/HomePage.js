@@ -10,8 +10,8 @@ import axios from "axios";
 const HomePage = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [data, setData] = useState([]);
-	const [formState, setFormState] = useState([0]);
-	const [listingType, setListingType] = useState();
+	const [formState, setFormState] = useState(0);
+	const [listingType, setListingType] = useState("sale");
 	const [address, setAddress] = useState([]),
 		onInput = ({ target: { value } }) => setAddress(value),
 		onFormSubmit = (e) => {
