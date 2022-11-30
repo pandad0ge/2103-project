@@ -1,6 +1,7 @@
-# ICT 2103 Project Documentation
+# ICT 2103 Project (Property Listing Site) Documentation
 
-This is the implementation of our ICT2103 Project done by:
+
+  This is the implementation of our ICT2103 Project done by:
 | Student | Student ID |
 | ------------- |:-------------:|
 |Zemus Koh Tzen Kit|  2103094|
@@ -9,20 +10,39 @@ This is the implementation of our ICT2103 Project done by:
 |Kok Chee Hong| 2101240|
 |Pang Ka Ho |2102047|
 |Norman Chia |2100686|
+<div align="center">
+  <p align="center">
+    <br />
+    <a href="https://youtu.be/RsTq94Kx2VQ" target="_blank" >Watch the demo</a>
+  </p>
+</div>
 
+<!-- ABOUT THE PROJECT -->
+
+## About The Project
+![Product Screenshot](https://iili.io/HfAjZJa.png)
+
+<p align="center"><small>Screenshot of our project</small> 
+</p>
 Our web application aims to help connect people to the right home as easily as possible. Its target users are potential home buyers, sellers, renters and real estate agents, with a variety of tools to cater to their separate needs and requirements. 
+
 
 The recent spike in demand for housing in Singapore means more users needing an overview of the market and our application aims to be a platform for every kind of potential user.
 
 ## Project Presentation
-
 [![Watch the presentation](https://img.youtube.com/vi/Zu3CUn-ZwmI/hqdefault.jpg)](https://youtu.be/Zu3CUn-ZwmI)
 
-## Table of Contents
+## Built With
 
-- [Installation](#installation)
-- [Basic usage](#basic-usage)
-- [What's included](#whats-included)
+![HfAXNXS.png](https://iili.io/HfAXNXS.png)
+MERN Stack Architecture
+
+Frontend - React
+Backend - Implemented with RBDMS MySQL
+
+Future implementations for mongoDB.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Installation
 
@@ -49,7 +69,6 @@ $ npm install
 $ npm run dev
 # server will be set up on localhost:5000
 ```
-
 
 ### Basic usage
 Navigate to [http://localhost:3000](http://localhost:3000). The app will automatically reload if you change any of the source files.
