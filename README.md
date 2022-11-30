@@ -30,7 +30,7 @@ Our web application aims to help connect people to the right home as easily as p
 The recent spike in demand for housing in Singapore means more users needing an overview of the market and our application aims to be a platform for every kind of potential user.
 
 ## Project Presentation
-[![Watch the presentation](https://img.youtube.com/vi/Zu3CUn-ZwmI/hqdefault.jpg)](https://youtu.be/Zu3CUn-ZwmI)
+[![Watch the presentation](https://img.youtube.com/vi/D4aqQ2wtcCA/hqdefault.jpg)](https://youtu.be/D4aqQ2wtcCA)
 
 ## Built With
 
