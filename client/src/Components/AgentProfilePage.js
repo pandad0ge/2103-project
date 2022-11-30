@@ -9,6 +9,7 @@ import {
   MDBCardImage,
 } from "mdb-react-ui-kit";
 
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 
@@ -21,6 +22,7 @@ const AgentProfilePage = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
@@ -170,8 +172,9 @@ const AgentProfilePage = () => {
               <div className="container">
                 <div className="row">
                   {data.map((value) => {
+                    value.listing_id = 102;
                     return (
-                      <div className="col-lg-4 mb-4">
+                      <div className="col-lg-4 mb-4" key={value.listing_id}>
                         <div className="card">
                           <img
                             src={value.image_link}
@@ -201,7 +204,16 @@ const AgentProfilePage = () => {
                             <p className="card-text font-weight-bold">
                               Listed price: {value.listed_price}
                             </p>
-                            <Button variant="outline-success">Edit</Button>
+                            <Button
+                              variant="outline-success"
+                              onClick={() => {
+                                navigate(
+                                  "/agent/edit-listing/" + value.listing_id
+                                );
+                              }}
+                            >
+                              Edit
+                            </Button>
                             <Button
                               variant="outline-danger"
                               onClick={handleShow}

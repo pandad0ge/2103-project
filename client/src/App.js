@@ -13,6 +13,7 @@ import CreateListingPage from "./Components/CreateListingPage";
 import Buy from "./Pages/Buy";
 import Rent from "./Pages/Rent";
 import IndividualListing from "./Pages/IndividualListing";
+import EditListingPage from "./Components/EditListing";
 
 function App() {
   const [backendData, setBackendData] = useState([{}]);
@@ -46,6 +47,9 @@ function App() {
         <Route path="/agent/rent" element={<Rent />} />
         <Route path="/agent/profile" element={<AgentProfilePage />} />
         <Route path="agent/new-listing" element={<CreateListingPage />} />
+        <Route path="agent/edit-listing/:id" element={<EditListingPage />} />
+        <Route path="agent/edit-listing" element={<EditListingPage />} />
+
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

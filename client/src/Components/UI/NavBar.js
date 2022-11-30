@@ -26,7 +26,7 @@ const NavBar = () => {
           as={Link}
           to={type === "user" ? `/${type}/home` : `/${type}/home`}
         >
-          React-Bootstrap
+          SELECT
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -54,7 +54,7 @@ const NavBar = () => {
               to="/agent/new-listing"
               className={type === "user" ? `d-none` : ``}
             >
-              New Listings
+              New Listing
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
