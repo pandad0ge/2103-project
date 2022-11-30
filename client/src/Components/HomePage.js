@@ -125,7 +125,6 @@ const HomePage = () => {
                   let listing_id = value.listing_id;
                   return (
                     <div className="col-lg-4 mb-4">
-                      <h1>{value.listing_id}</h1>
                       <div className="card">
                         <img
                           src={value.image_link}
