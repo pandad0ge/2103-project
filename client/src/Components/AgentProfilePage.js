@@ -9,6 +9,7 @@ import {
 	MDBCardImage,
 } from "mdb-react-ui-kit";
 
+import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 
@@ -21,18 +22,18 @@ const AgentProfilePage = () => {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		setIsLoading(true);
 		const configuration = {
-			url: "http://localhost:5000/agent/profile/api/agent",
+			url: "http://localhost:5000/agent/profile/api/agent", // /get/listing /post/listing
 			method: "get",
 		};
 
 		axios(configuration)
 			.then((result) => {
-				console.log("result: ");
-				console.log(result);
+				console.log(result.data);
 
 				let tempList = [];
 
@@ -203,26 +204,17 @@ const AgentProfilePage = () => {
 													/>
 													<div className="card-body">
 														<h5 className="card-title">
-															<p>
-																Floor size:{" "}
-																{
-																	value.floor_size
-																}{" "}
-																sqft
-															</p>
-															<p>
-																Property type:{" "}
-																{
-																	value.property_type
-																}
-															</p>
-															<p>
-																Region:{" "}
-																{value.region}
-															</p>
+															Description:{" "}
+															{value.description}
 														</h5>
-														<p className="card-text">{`${value.description}`}</p>
-														<p className="card-text">{`${value.address}`}</p>
+														<p className="card-text">
+															Type:{" "}
+															{value.listing_type}
+														</p>
+														<p className="card-text">
+															Region:{" "}
+															{value.region}
+														</p>
 														<p className="text-muted">
 															{" "}
 															<i className="fa fa-phone"></i>{" "}
@@ -238,23 +230,26 @@ const AgentProfilePage = () => {
 															{`${value.contact_no}`}
 														</p>
 														<p className="card-text font-weight-bold">
-															Listed price: $
-															{value.listed_price.toFixed(
-																2
-															)}
+															Listed price:{" "}
+															{value.listed_price}
 														</p>
-														<a
-															href=""
-															className="btn btn-outline-success btn-sm"
+														<Button
+															variant="outline-success"
+															onClick={() => {
+																navigate(
+																	"/agent/edit-listing/" +
+																		value.listing_id
+																);
+															}}
 														>
-															Buy
-														</a>
-														<a
-															href=""
-															className="btn btn-outline-danger btn-sm"
+															Edit
+														</Button>
+														<Button
+															variant="outline-danger"
+															onClick={handleShow}
 														>
-															<i className="far fa-heart"></i>
-														</a>
+															Delete
+														</Button>
 													</div>
 												</div>
 											</div>
