@@ -106,15 +106,67 @@ const HomePage = () => {
         <Figure.Image src={skyline} fluid />
       </Figure> */}
       <Container>
-        <div
-          style={{
-            paddingLeft: "75px",
-            paddingTop: "30px",
-            marginBottom: "30px",
-            color: "lavenderblush",
-          }}
-        >
-          <h2 className="home-latest-projects">Latest Projects</h2>
+
+        <Row>
+          <Col></Col>
+          <Col
+            xs={6}
+            style={{
+              border: "1px solid lavenderblush",
+              borderRadius: "40px",
+              padding: "40px",
+              marginTop: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            <Form onSubmit={onFormSubmit}>
+              <Form.Group
+                className="mb-3"
+                controlId="formBasicEmail"
+                onChange={onInput}
+                value={listingType}
+              >
+                <Form.Control placeholder="Search by Address" />
+              </Form.Group>
+              <div key={`inline-radio`} className="mb-3">
+                <Form.Check
+                  inline
+                  checked
+                  name="buy-rent"
+                  type="radio"
+                  label={"Buy"}
+                  value={"sale"}
+                  id="inline-radio-1"
+                  onChange={handleRadio}
+                />
+                <Form.Check
+                  inline
+                  name="buy-rent"
+                  type="radio"
+                  label={"Rent"}
+                  value={"rent"}
+                  id="inline-radio-2"
+                  onChange={handleRadio}
+                />
+              </div>
+              <Button variant="outline-light" type="submit">
+                Search
+              </Button>
+            </Form>
+          </Col>
+          <Col></Col>
+        </Row>{" "}
+        <div className={formState > 0 ? "d-none" : ""}>
+          <div
+            style={{
+              paddingLeft: "75px",
+              paddingTop: "30px",
+              marginBottom: "30px",
+              color: "lavenderblush",
+            }}
+          >
+            <h2 className="home-latest-projects">Latest Projects</h2>
+          </div>
         </div>
         <div>
           {" "}
@@ -122,7 +174,6 @@ const HomePage = () => {
             <div className="container">
               <div className="row">
                 {data.map((value) => {
-                  let listing_id = value.listing_id;
                   return (
                     <div className="col-lg-4 mb-4">
                       <div className="card">
@@ -157,6 +208,7 @@ const HomePage = () => {
                           <a href="" className="btn btn-outline-success btn-sm">
                             Buy
                           </a>
+
                           <a
                             className="btn btn-outline-danger btn-sm"
                             onClick={() => {
@@ -175,6 +227,7 @@ const HomePage = () => {
                                 });
                             }}
                           >
+
                             <i className="far fa-heart"></i>
                           </a>
                         </div>
@@ -186,52 +239,6 @@ const HomePage = () => {
             </div>
           </section>{" "}
         </div>
-        <Row>
-          <Col></Col>
-          <Col
-            xs={6}
-            style={{
-              border: "1px solid lavenderblush",
-              borderRadius: "40px",
-              padding: "40px",
-            }}
-          >
-            <Form onSubmit={onFormSubmit}>
-              <Form.Group
-                className="mb-3"
-                controlId="formBasicEmail"
-                onChange={onInput}
-                value={listingType}
-              >
-                <Form.Control placeholder="Search by Address" />
-              </Form.Group>
-              <div key={`inline-radio`} className="mb-3">
-                <Form.Check
-                  inline
-                  name="buy-rent"
-                  type="radio"
-                  label={"Buy"}
-                  value={"sale"}
-                  id="inline-radio-1"
-                  onChange={handleRadio}
-                />
-                <Form.Check
-                  inline
-                  name="buy-rent"
-                  type="radio"
-                  label={"Rent"}
-                  value={"rent"}
-                  id="inline-radio-2"
-                  onChange={handleRadio}
-                />
-              </div>
-              <Button variant="outline-light" type="submit">
-                Search
-              </Button>
-            </Form>
-          </Col>
-          <Col></Col>
-        </Row>{" "}
       </Container>
     </>
   );
