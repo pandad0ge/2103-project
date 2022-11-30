@@ -27,7 +27,7 @@ const AgentProfilePage = () => {
 	useEffect(() => {
 		setIsLoading(true);
 		const configuration = {
-			url: "http://localhost:5000/agent/profile/api/agent", // /get/listing /post/listing
+			url: "http://localhost:5000/agent/profile/api/agent",
 			method: "get",
 		};
 

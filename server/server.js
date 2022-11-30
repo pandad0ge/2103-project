@@ -99,6 +99,40 @@ app.get("/user/home/api/searchlisting", (req, res) => {
 	}
 });
 
+// get specific listing
+app.get("/agent/profile/api/getlisting", (req, res) => {
+	console.log("hello world");
+	console.log(req.query);
+
+	if (req.query.listing_id === undefined) {
+		return;
+	}
+
+	if (Object.keys(req.query).length === 0) return;
+
+	// This query will be used to select columns
+	let query = `SELECT L.listing_id, L.floor_size, L.property_type, L.region, L.address, 
+                L.listed_price, L.description, L.listing_type,
+                A.first_name, A.last_name, A.contact_no,
+                I.image_link
+                FROM listing AS L
+                INNER JOIN agentaccount AS A
+                ON L.listed_by = A.agent_user_id
+                INNER JOIN listingimage AS I
+                ON L.listing_id = I.listing_id
+                WHERE L.listing_id = ?
+                ORDER BY listed_date;`;
+
+	try {
+		db.query(query, [Number(req.query.listing_id)], (err, rows, fields) => {
+			if (err) throw err;
+			res.json(rows);
+		});
+	} catch (err) {
+		console.log(err);
+	}
+});
+
 // get all listing
 app.get("/user/home/api/listing", (req, res) => {
 	// This query will be used to select columns
@@ -224,7 +258,6 @@ app.get("/agent/profile/api/agent", (req, res) => {
 	try {
 		db.query(query, (err, rows) => {
 			if (err) throw err;
-			console.log(rows);
 			res.json(rows);
 		});
 	} catch (err) {
