@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const usersSchema = new mongoose.Schema({
     user_id: {
-        type: Number,
+        type: String,
         required: true,
     },
     first_name: {
@@ -20,7 +20,6 @@ const usersSchema = new mongoose.Schema({
     email_address: {
         type: String,
         required: true,
-        default: Date.now,
     },
     password_hashed: {
         type: String,
@@ -28,7 +27,7 @@ const usersSchema = new mongoose.Schema({
     },
     saved_listing: [
         {
-            listing_id: Number,
+            listing_id: String,
             date_saved: String,
             listing_type: String,
             property_type: String,
@@ -41,7 +40,7 @@ const usersSchema = new mongoose.Schema({
             listed_price: Number,
             status: String,
             listed_by: {
-                agent_id: Number,
+                agent_id: String,
                 agent_first_name: String,
                 agent_last_name: String,
                 estate_license_no: String,

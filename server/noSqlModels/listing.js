@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const listingsSchema = new mongoose.Schema({
     listing_id: {
-        type: Number,
+        type: String,
         required: true,
     },
     listing_type: {
@@ -20,12 +20,10 @@ const listingsSchema = new mongoose.Schema({
     listed_time: {
         type: String,
         required: true,
-        default: Date.now,
     },
     availability: {
         type: String,
         required: true,
-        default: Date.now,
     },
     description: {
         type: String,
@@ -48,7 +46,7 @@ const listingsSchema = new mongoose.Schema({
         required: true,
     },
     listed_by: {
-        agent_id: Number,
+        agent_id: String,
         first_name: String,
         last_name: String,
         estate_license_no: String,

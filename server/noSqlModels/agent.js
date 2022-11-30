@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const agentsSchema = new mongoose.Schema({
     agent_user_id: {
-        type: Number,
+        type: String,
         required: true,
     },
     first_name: {
@@ -16,7 +16,6 @@ const agentsSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        default: Date.now,
     },
     contact_no: {
         type: Number,
@@ -37,7 +36,7 @@ const agentsSchema = new mongoose.Schema({
     },
     transactions: [
         {
-            listing_id: Number,
+            listing_id: String,
             transacted_price: Number,
             transacted_date: String,
             address: String,
@@ -46,7 +45,7 @@ const agentsSchema = new mongoose.Schema({
     ],
     created_listings: [
         {
-            listing_id: Number,
+            listing_id: String,
             address: String,
             description: String,
             listed_price: Number,
