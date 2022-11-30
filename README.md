@@ -44,7 +44,15 @@ Future implementations for mongoDB.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Installation
+### Database Installation
+
+1. Spin up MySQL instance on `localhost:3306`
+2. Create `2103db`
+3. Select `2103db` 
+4. Run query from `dbSetupOneInsertFinal.sql`
+5. All the data should be loaded on `2103db`
+
+### Client Installation
 
 In the master branch, you have two different folders, client (the React app) and server (an Express application offering REST API endpoints).
 
