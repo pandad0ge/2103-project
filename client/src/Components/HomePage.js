@@ -106,6 +106,7 @@ const HomePage = () => {
         <Figure.Image src={skyline} fluid />
       </Figure> */}
       <Container>
+
         <Row>
           <Col></Col>
           <Col
@@ -207,7 +208,26 @@ const HomePage = () => {
                           <a href="" className="btn btn-outline-success btn-sm">
                             Buy
                           </a>
-                          <a href="" className="btn btn-outline-danger btn-sm">
+
+                          <a
+                            className="btn btn-outline-danger btn-sm"
+                            onClick={() => {
+                              const configuration3 = {
+                                url: `http://localhost:5000/user/home/api/savelisting/`,
+                                method: "post",
+                                params: { listing_id: listing_id },
+                              };
+
+                              axios(configuration3)
+                                .then((result) => {
+                                  console.log(data);
+                                })
+                                .catch((error) => {
+                                  console.log(error);
+                                });
+                            }}
+                          >
+
                             <i className="far fa-heart"></i>
                           </a>
                         </div>

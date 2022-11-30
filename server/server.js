@@ -5,7 +5,7 @@ const mysql = require("mysql");
 const bcrypt = require("bcrypt");
 const { json } = require("express");
 const app = express();
-var sha256 = require('js-sha256');
+var sha256 = require("js-sha256");
 
 const users = [];
 
@@ -15,41 +15,41 @@ app.use(cors());
 // console.log("Connected to PlanetScale!");
 
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "sqluser",
-    password: "password",
-    database: "2103db",
+  host: "127.0.0.1",
+  user: "sqluser",
+  password: "password",
+  database: "2103db",
 });
 
 db.connect((err) => {
-    if (err) {
-        console.log("Database Connection Failed", err);
-        return;
-    }
-    console.log("Connected to Database");
+  if (err) {
+    console.log("Database Connection Failed", err);
+    return;
+  }
+  console.log("Connected to Database");
 });
 
 app.get("/api", (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.json({ users: ["userOne", "userTwo", "userThree"] });
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.json({ users: ["userOne", "userTwo", "userThree"] });
 });
 
 app.listen(5000, () => {
-    console.log("Server started on port 5000");
+  console.log("Server started on port 5000");
 });
 
 app.get("/users", (req, res) => {
-    res.json(users);
+  res.json(users);
 });
 
 app.post("/agent/home/api/createlisting", (req, res) => {
-	console.log(req.query);
+  console.log(req.query);
 
-	if (Object.keys(req.query).length === 0) return;
+  if (Object.keys(req.query).length === 0) return;
 
-	let professorAgentId = "1";
+  let professorAgentId = "1";
 
-	let query1 = `INSERT INTO listing
+  let query1 = `INSERT INTO listing
     (listing_type,
     property_type,
     floor_size,
@@ -63,93 +63,83 @@ app.post("/agent/home/api/createlisting", (req, res) => {
     listed_by)
     VALUES (?, ?, ?, CURDATE(), ?, ?, ?, ?, ?, 1, ${professorAgentId});`;
 
-	let selectLatestQuery =
-		"SELECT * FROM listing ORDER BY listing_id DESC LIMIT 1";
+  let selectLatestQuery =
+    "SELECT * FROM listing ORDER BY listing_id DESC LIMIT 1";
 
-	let query2 = `INSERT INTO listingimage
+  let query2 = `INSERT INTO listingimage
     (listing_id, image_link) VALUES (?, ?);`;
 
-	try {
-		db.query(
-			query1,
-			[
-				req.query.listing_type,
-				req.query.property_type,
-				req.query.floor_size,
-				req.query.availability,
-				req.query.description,
-				req.query.address,
-				req.query.region,
-				req.query.listed_price,
-				req.query.status,
-			],
-			(error, rows, fields) => {
-				if (error) return res.json({ error: error });
-			}
-		);
+  try {
+    db.query(
+      query1,
+      [
+        req.query.listing_type,
+        req.query.property_type,
+        req.query.floor_size,
+        req.query.availability,
+        req.query.description,
+        req.query.address,
+        req.query.region,
+        req.query.listed_price,
+        req.query.status,
+      ],
+      (error, rows, fields) => {
+        if (error) return res.json({ error: error });
+      }
+    );
 
-		db.query(selectLatestQuery, (error, rows, fields) => {
-			if (error) return res.json({ error: error });
-			// console.log(rows);
-			db.query(
-				query2,
-				[rows[0]["listing_id"], req.query.image_link],
-				(error, rows, fields) => {
-					if (error) return res.json({ error: error });
-				}
-			);
-		});
+    db.query(selectLatestQuery, (error, rows, fields) => {
+      if (error) return res.json({ error: error });
+      // console.log(rows);
+      db.query(
+        query2,
+        [rows[0]["listing_id"], req.query.image_link],
+        (error, rows, fields) => {
+          if (error) return res.json({ error: error });
+        }
+      );
+    });
 
-		res.status(201).send();
-	} catch {
-		res.status(500).send();
-	}
+    res.status(201).send();
+  } catch {
+    res.status(500).send();
+  }
 });
 
 app.post("/user/home/api/savelisting", (req, res) => {
-	console.log(req.query);
+  console.log("this is my req query" + req.query);
+  if (Object.keys(req.query).length === 0) return;
 
-	if (Object.keys(req.query).length === 0) return;
+  let professorUserId = "10";
 
-	let professorUserId = "10";
+  console.log("listing_id: " + req.query.listing_id);
 
-	let saveListing = `INSERT INTO savedlisting
+  let saveListing = `INSERT INTO savedlisting
     (listing_id,
     user_id,
     date_saved)
     VALUES (?, ${professorUserId}, CURDATE());`;
 
-	try {
-		db.query(
-			saveListing,
-			[
-				req.query.listing_id
-			],
-			(error, rows, fields) => {
-				if (error) return res.json({ error: error });
-			}
-		);
-
-		res.status(201).send();
-	} catch {
-		res.status(500).send();
-	}
+  try {
+    db.query(saveListing, [req.query.listing_id], (error, rows, fields) => {
+      if (error) return res.json({ error: error });
+    });
+  } catch {
+    // res.status(500).send();
+  }
 });
 
 app.get("/user/home/api/searchlisting", (req, res) => {
-	console.log(req.query);
+  console.log(req.query);
 
-	if (
-		req.query.address === undefined ||
-		req.query.listing_type === undefined
-	) {
-		return;
-	 }
+  if (req.query.address === undefined || req.query.listing_type === undefined) {
+    return;
+  }
 
-	if (Object.keys(req.query).length === 0) return;
+  if (Object.keys(req.query).length === 0) return;
 
-	// This query will be used to select columns
-	let query = `SELECT L.floor_size, L.property_type, L.region, L.address,
+  // This query will be used to select columns
+  let query = `SELECT L.floor_size, L.property_type, L.region, L.address,
                 L.listed_price, L.description, L.listing_type,
                 A.first_name, A.last_name, A.contact_no,
                 I.image_link
@@ -162,23 +152,23 @@ app.get("/user/home/api/searchlisting", (req, res) => {
                 AND L.listing_type = ?
                 ORDER BY listed_date;`;
 
-	try {
-		db.query(
-			query,
-			[`%${req.query.address}%`, req.query.listing_type],
-			(err, rows, fields) => {
-    			if (err) throw err;
-				res.json(rows);
-			}
-		);
-	} catch (err) {
-		console.log(err);
-	}
+  try {
+    db.query(
+      query,
+      [`%${req.query.address}%`, req.query.listing_type],
+      (err, rows, fields) => {
+        if (err) throw err;
+        res.json(rows);
+      }
+    );
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.get("/user/home/api/listing", (req, res) => {
-    // This query will be used to select columns
-    let query = `SELECT L.floor_size, L.property_type, L.region, L.address, 
+  // This query will be used to select columns
+  let query = `SELECT L.listing_id, L.floor_size, L.property_type, L.region, L.address, 
                 L.listed_price, L.description, L.listing_type,
                 A.first_name, A.last_name, A.contact_no,
                 I.image_link
@@ -190,19 +180,19 @@ app.get("/user/home/api/listing", (req, res) => {
                 ORDER BY listed_date
                 DESC LIMIT 3;`;
 
-    try {
-        db.query(query, (err, rows) => {
-            if (err) throw err;
-            res.json(rows);
-        });
-    } catch (err) {
-        console.log(err);
-    }
+  try {
+    db.query(query, (err, rows) => {
+      if (err) throw err;
+      res.json(rows);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.get("/user/home/api/sale", (req, res) => {
-    // This query will be used to select columns
-    let query = `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description,
+  // This query will be used to select columns
+  let query = `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description,
                 A.first_name, A.last_name, A.contact_no,
                 I.image_link
                 FROM listing AS L
@@ -213,19 +203,19 @@ app.get("/user/home/api/sale", (req, res) => {
                 WHERE L.listing_type = "sale"
                 ORDER BY listed_date;`;
 
-    try {
-        db.query(query, (err, rows) => {
-            if (err) throw err;
-            res.json(rows);
-        });
-    } catch (err) {
-        console.log(err);
-    }
+  try {
+    db.query(query, (err, rows) => {
+      if (err) throw err;
+      res.json(rows);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.get("/user/home/api/rent", (req, res) => {
-    // This query will be used to select columns
-    let query = `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description,
+  // This query will be used to select columns
+  let query = `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description,
                 A.first_name, A.last_name, A.contact_no,
                 I.image_link
                 FROM listing AS L
@@ -236,19 +226,18 @@ app.get("/user/home/api/rent", (req, res) => {
                 WHERE L.listing_type = "rent"
                 ORDER BY listed_date;`;
 
-    try {
-        db.query(query, (err, rows) => {
-            if (err) throw err;
-            res.json(rows);
-        });
-    } catch (err) {
-        console.log(err);
-    }
+  try {
+    db.query(query, (err, rows) => {
+      if (err) throw err;
+      res.json(rows);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.get("/user/profile/api/user", (req, res) => {
-    let query =
-    `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description, L.listing_type,
+  let query = `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description, L.listing_type,
     A.first_name, A.last_name, A.contact_no,
     I.image_link,
     U.first_name AS user_first_name, U.last_name AS user_last_name, U.email_address AS user_email_address, U.contact_no AS user_contact_no
@@ -263,20 +252,18 @@ app.get("/user/profile/api/user", (req, res) => {
     ON S.user_id = U.user_id
     WHERE S.user_id = '10';`;
 
-    try {
-        db.query(query, (err, rows) => {
-            if (err) throw err;
-            res.json(rows);
-        });
-    } catch (err) {
-        console.log(err);
-    }
+  try {
+    db.query(query, (err, rows) => {
+      if (err) throw err;
+      res.json(rows);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-
 app.get("/agent/profile/api/agent", (req, res) => {
-    let query =
-    `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description, L.listing_type,
+  let query = `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description, L.listing_type,
     A.first_name, A.last_name, A.contact_no, A.email_address,
     I.image_link,
     AG.agent_id,
@@ -292,78 +279,77 @@ app.get("/agent/profile/api/agent", (req, res) => {
     ON AG.estate_agency_license_no = AC.estate_agency_license_no
     WHERE A.agent_user_id = '154';`;
 
-    try {
-        db.query(query, (err, rows) => {
-            if (err) throw err;
-            res.json(rows);
-        });
-    } catch (err) {
-        console.log(err);
-    }
+  try {
+    db.query(query, (err, rows) => {
+      if (err) throw err;
+      res.json(rows);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-
 app.post("/users/register", async (req, res) => {
-    try {
-        console.log(req.body);
+  try {
+    console.log(req.body);
 
-        const hashedPassword = sha256(req.body.password);
+    const hashedPassword = sha256(req.body.password);
 
-        db.query(
-            `INSERT INTO useraccount (user_id, first_name, last_name, contact_no, email_address, password_hash) VALUES
+    db.query(
+      `INSERT INTO useraccount (user_id, first_name, last_name, contact_no, email_address, password_hash) VALUES
             (?,?,?,?,?,?)`,
-            [
-                req.body.userId,
-                req.body.fName,
-                req.body.lName,
-                req.body.contactNo,
-                req.body.email,
-                hashedPassword,
-            ],
-            (error, results) => {
-                if (error) return res.json({ error: error });
-            }
-        );
-        res.status(201).send();
-    } catch {
-        res.status(500).send();
-    }
+      [
+        req.body.userId,
+        req.body.fName,
+        req.body.lName,
+        req.body.contactNo,
+        req.body.email,
+        hashedPassword,
+      ],
+      (error, results) => {
+        if (error) return res.json({ error: error });
+      }
+    );
+    res.status(201).send();
+  } catch {
+    res.status(500).send();
+  }
 });
 
 app.post("/users/login", async (req, res) => {
-    // This query will be used to select columns
-    let query = `SELECT * FROM useraccount WHERE user_id = ${req.body.userId}`;
+  // This query will be used to select columns
+  let query = `SELECT * FROM useraccount WHERE user_id = ${req.body.userId}`;
 
-    try {
-        db.query(query, (err, rows) => {
-            if (err) throw err;
-            bcrypt.compare(
-                req.body.password,
-                rows[0].password_hash,
-                (err, result) => {
-                    console.log(result);
-                }
-            );
+  try {
+    db.query(query, (err, rows) => {
+      if (err) throw err;
+      bcrypt.compare(
+        req.body.password,
+        rows[0].password_hash,
+        (err, result) => {
+          console.log(result);
+        }
+      );
 
-            // console.log(rows);
+      // console.log(rows);
 
-            // try {
-            //     if ( await bcrypt.compare(req.body.password, rows[0].password_hash)) {
-            //         res.send("Success");
-            //     } else {
-            //         res.send("Not Allowed");
-            //     }
-            // } catch {
-            //     res.status(500).send();
-            // }
-        });
-    } catch (err) {
-        console.log(err);
-    }
+      // try {
+      //     if ( await bcrypt.compare(req.body.password, rows[0].password_hash)) {
+      //         res.send("Success");
+      //     } else {
+      //         res.send("Not Allowed");
+      //     }
+      // } catch {
+      //     res.status(500).send();
+      // }
+    });
+  } catch (err) {
+    console.log(err);
+  }
 
-    // console.log("results");
-    // const user = users.find((user) => user.name === req.body.name);
-    // if (user == null) {
-    //     return res.status(400).send("Cannot find user");
-    // }
+  // console.log("results");
+  // const user = users.find((user) => user.name === req.body.name);
+  // if (user == null) {
+  //     return res.status(400).send("Cannot find user");
+  // }
 });
