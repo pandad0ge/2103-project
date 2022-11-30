@@ -199,9 +199,9 @@ app.get("/user/profile/api/user", (req, res) => {
 	}
 });
 
-// get all agents
+// get professor agent user account
 app.get("/agent/profile/api/agent", (req, res) => {
-	let query = `SELECT L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description, L.listing_type,
+	let query = `SELECT L.listing_id, L.floor_size, L.property_type, L.region, L.address, L.listed_price, L.description, L.listing_type,
 	            A.first_name, A.last_name, A.contact_no, A.email_address,
 	            I.image_link,
 	            AG.agent_id,
