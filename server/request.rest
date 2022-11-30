@@ -1,22 +1,223 @@
-GET http://localhost:5000/users
-
-###
-
-POST http://localhost:5000/users
+#--------------------Users---------------------#
+### Create account
+POST http://localhost:5000/api/users/register
 Content-Type: application/json
 
 {
-    "name": "Kyle",
+    "user_id": 9939614,
+    "first_name": "zemus",
+    "last_name": "koh",
+    "contact_no": 96587576,
+    "email_address": "zemuskoh99@gmail.com",
     "password": "password"
 }
 
-###
-POST http://localhost:5000/users/login
+### Login
+POST http://localhost:5000/api/users/login
 Content-Type: application/json
 
 {
-    "name": "Kyle",
-    "password": "password1"
+    "user_id": 9939614,
+    "password": "password"
+}
+
+### Get one user based on user_id
+GET http://localhost:5000/api/users/9939614
+
+
+### Save listing
+PATCH http://localhost:5000/api/users/saveListing/9939614
+Content-Type: application/json
+
+{
+    "listing":
+    {"listing_id": 99999,
+    "listing_type": "sale",
+    "property_type": "HDB",
+    "floor_size": 1923,
+    "listed_time": "1/12/2021",
+    "availability": "1/12/2021",
+    "description": "Test description",
+    "address": "110 Westwood Crescent",
+    "region": "West",
+    "listed_price": 1250000,
+    "status": "open",
+    "listed_by": {"agent_id": 204, "agent_first_name": "Marmaduke", "agent_last_name": "Hancock", "estate_license_no": "L3010793D", "estate_agency_name": "ONE GLOBAL PROPERTY SERVICES (SINGAPORE) PTE. LTD.", "contact_no": 91234325},
+    "listing_images": ["https://sg1-cdn.pgimgs.com/listing/24198031/UPHO.138041038.V800/Hillion-Residences-Dairy-Farm-Bukit-Panjang-Choa-Chu-Kang-Singapore.jpg"]}
+}
+
+### Remove listing
+PATCH http://localhost:5000/api/users/removeListing/3
+Content-Type: application/json
+
+{
+    "listing_id": 465
 }
 
 
+
+#-------------------Listings-------------------#
+### Create listing
+POST http://localhost:5000/api/listings/create/1
+Content-Type: application/json
+
+{
+    "listing_type": "sale",
+    "property_type": "HDB",
+    "floor_size": 1923,
+    "listed_time": "1/12/2021",
+    "availability": "1/12/2021",
+    "description": "Test description",
+    "address": "110 Westwood Crescent",
+    "region": "West",
+    "listed_price": 1250000,
+    "status": "open",
+    "listed_by": {"agent_id": 204, "first_name": "Marmaduke", "last_name": "Hancock", "estate_license_no": "L3010793D", "estate_agency_name": "ONE GLOBAL PROPERTY SERVICES (SINGAPORE) PTE. LTD."},
+    "listing_images": ["https://sg1-cdn.pgimgs.com/listing/24198031/UPHO.138041038.V800/Hillion-Residences-Dairy-Farm-Bukit-Panjang-Choa-Chu-Kang-Singapore.jpg"]
+}
+
+### Get all listings
+GET http://localhost:5000/api/listings/
+
+### Get all rent listings
+GET http://localhost:5000/api/listings/rent
+
+### Get all sale listings
+GET http://localhost:5000/api/listings/sale
+
+### Get one listing based on listing_id
+GET http://localhost:5000/api/listings/157
+
+### Update listing
+PATCH http://localhost:5000/api/listings/157
+Content-Type: application/json
+
+{
+    "listing_id": 99999,
+    "listing_type": "sale",
+    "property_type": "HDB",
+    "floor_size": 1923,
+    "listed_time": "1/12/2021",
+    "availability": "1/12/2021",
+    "description": "Test description",
+    "address": "110 Westwood Crescent",
+    "region": "West",
+    "listed_price": 1250000,
+    "status": "open",
+    "listed_by": {"agent_id": 204, "first_name": "Marmaduke", "last_name": "Hancock", "estate_license_no": "L3010793D", "estate_agency_name": "ONE GLOBAL PROPERTY SERVICES (SINGAPORE) PTE. LTD."},
+    "listing_images": ["https://sg1-cdn.pgimgs.com/listing/24198031/UPHO.138041038.V800/Hillion-Residences-Dairy-Farm-Bukit-Panjang-Choa-Chu-Kang-Singapore.jpg"]
+}
+
+### Delete listing
+DELETE http://localhost:5000/api/listings/157
+
+### Search
+POST http://localhost:5000/api/listings/search
+Content-Type: application/json
+
+{
+    "searchText": "west"
+}
+
+### Get Average listing price per region
+GET http://localhost:5000/api/listings/sale/regionAvg
+
+### Get Max listing price per region
+GET http://localhost:5000/api/listings/sale/regionMax
+
+### Get Min listing price per region
+GET http://localhost:5000/api/listings/sale/regionMin
+
+### Sort Price
+POST http://localhost:5000/api/listings/sortPrice
+Content-Type: application/json
+
+{
+    "order": -1
+}
+
+### Filter Price Range
+POST http://localhost:5000/api/listings/filterPriceRange
+Content-Type: application/json
+
+{
+    "min": 1000,
+    "max": 10000
+}
+
+### Filter Region
+POST http://localhost:5000/api/listings/filterRegion
+Content-Type: application/json
+
+{
+    "region": "West"
+}
+
+
+
+#--------------------Agents--------------------#
+### Agent Register
+POST http://localhost:5000/api/agents/register
+Content-Type: application/json
+
+{
+    "agent_user_id": 96587576,
+    "first_name": "panda",
+    "last_name": "doge",
+    "email": "panda@gmail.com",
+    "contact_no": 96587576,
+    "password": "password",
+    "agent_id": "R123456Z"
+}
+
+
+### Agent Login
+POST http://localhost:5000/api/agents/login
+Content-Type: application/json
+
+{
+    "agent_user_id": 96587576,
+    "password": "password"
+}
+
+### Get all agents
+GET http://localhost:5000/api/agents
+
+
+### Get one agent based on agent_user_id
+GET http://localhost:5000/api/agents/7
+
+
+### Delete agent listings
+PATCH http://localhost:5000/api/agents/550
+Content-Type: application/json
+
+{
+    "listing_id": 822
+}
+
+### Get Average listing price per company
+GET http://localhost:5000/api/agents/sale/companyAvg
+
+### Get Max listing price per company
+GET http://localhost:5000/api/agents/sale/companyMax
+
+### Get Min listing price per company
+GET http://localhost:5000/api/agents/sale/companyMin
+
+
+#-------------------CEA Data-------------------#
+### Get agency data based on esate_agency_license_no
+GET http://localhost:5000/api/ceaData/R049945I
+
+### Create new agency data
+POST http://localhost:5000/api/ceaData
+Content-Type: application/json
+
+{
+    "estate_agency_license_no": "110Westwood",
+    "estate_agency_name": "Zemus",
+    "estate_agency_address": "Zemus",
+    "email_address": "zemus@gmail.com",
+    "year_incorporated": 1999
+}
