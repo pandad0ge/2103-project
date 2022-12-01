@@ -9,7 +9,7 @@
 |Shaun Sartra Varghese | 2102172 |
 |Kok Chee Hong| 2101240|
 |Pang Ka Ho |2102047|
-|Norman Chia |2100686|
+|Wang Qixian |2101751|
 <div align="center">
   <p align="center">
     <br />
